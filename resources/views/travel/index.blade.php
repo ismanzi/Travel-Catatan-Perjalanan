@@ -36,19 +36,33 @@
         }
 
         .alert {
-            margin-bottom: 0;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
+ 
+        @if(session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle-fill"></i> {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <!-- Heading -->
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="fw-bold">📋 Daftar Catatan Perjalanan</h1>
-            <a href="{{ route('travel.create') }}" class="btn btn-success">
-                <i class="bi bi-plus-circle"></i> Tambah Catatan
-            </a>
+            <div>
+                <a href="{{ route('home') }}" class="btn btn-secondary me-2">
+                    <i class="bi bi-house-door"></i> Dashboard
+                </a>
+                <a href="{{ route('travel.create') }}" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i> Tambah Catatan
+                </a>
+            </div>
         </div>
+        
 
         <!-- Form Pencarian -->
         <div class="card shadow-sm border-0 mb-4">

@@ -17,27 +17,27 @@ class TravelingController extends Controller
    
     $query = Traveling::where('user_id', Auth::id());
 
-    // Filter berdasarkan tanggal 
+    // Filter tanggal 
     if ($request->filled('travel_date')) {
         $query->where('travel_date', $request->travel_date);
     }
 
-    // Filter berdasarkan waktu 
+    // Filter waktu 
     if ($request->filled('travel_time')) {
         $query->where('travel_time', $request->travel_time);
     }
 
-    // Filter berdasarkan lokasi 
+    // Filter lokasi 
     if ($request->filled('location')) {
         $query->where('location', 'like', '%' . $request->location . '%');
     }
 
-    // Pengurutan data
+    // Ascending dan descending
     $sortBy = $request->get('sort_by', 'travel_date'); 
     $sortOrder = $request->get('sort_order', 'asc');   
     $query->orderBy($sortBy, $sortOrder);
 
-    // Eksekusi query dan ambil hasilnya
+    
     $travelLogs = $query->get();
 
     
@@ -103,35 +103,32 @@ class TravelingController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        //
-        $request->validate([
-            'travel_date' => 'required|date',
-            'travel_time' => 'required',
-            'location' => 'required|string|max:255',
-            'body_temperature' => 'required|numeric|min:35|max:42',
-        ]);
+{
+    $request->validate([
+        'travel_date' => 'required|date',
+        'travel_time' => 'required',
+        'location' => 'required|string|max:255',
+        'body_temperature' => 'required|numeric|min:35|max:42',
+    ]);
 
-        $travelLog = Traveling::findOrFail($id);
-        $travelLog->update([
-            'travel_date' => $request->travel_date,
-            'travel_time' => $request->travel_time,
-            'location' => $request->location,
-            'body_temperature' => $request->body_temperature,
-        ]);
+    $travelLog = Traveling::findOrFail($id);
+    $travelLog->update([
+        'travel_date' => $request->travel_date,
+        'travel_time' => $request->travel_time,
+        'location' => $request->location,
+        'body_temperature' => $request->body_temperature,
+    ]);
 
-        return redirect()->route('travel.index')->with('success', 'Catatan perjalanan berhasil diperbarui.');
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-        $travelLog = Traveling::findOrFail($id);
-        $travelLog->delete();
+    return redirect()->route('travel.index')->with('success', 'Catatan perjalanan berhasil diperbarui.');
+}
 
-        return redirect()->route('travel.index')->with('success', 'Catatan perjalanan berhasil dihapus.');
-    }
+public function destroy(string $id)
+{
+    $travelLog = Traveling::findOrFail($id);
+    $travelLog->delete();
+
+
+    return redirect()->route('travel.index')->with('success', 'Catatan perjalanan berhasil dihapus.');
+}
 }

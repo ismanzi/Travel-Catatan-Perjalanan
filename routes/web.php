@@ -24,7 +24,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register'])->name('register.store');
 
-// Travel Logs Routes (CRUD)
+// Travel Routes (CRUD)
 Route::prefix('travel')->group(function () {
     Route::get('/', [TravelingController::class, 'index'])->name('travel.index');
     Route::get('/create', [TravelingController::class, 'create'])->name('travel.create');

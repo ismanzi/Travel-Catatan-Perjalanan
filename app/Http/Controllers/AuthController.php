@@ -26,22 +26,21 @@ class AuthController extends Controller
         'nama' => 'required|string',
     ]);
 
-    // Cek apakah NIK ada di database
+
     $user = User::where('nik', $request->nik)->first();
 
     if ($user) {
-        // Cek apakah nama cocok
         if ($user->name === $request->nama) {
-            // Login berhasil
+           
             Auth::login($user);
             return redirect()->route('home')->with('success', 'Login berhasil.');
         } else {
-            // Nama salah
+           
             return back()->withErrors(['nama' => 'Nama tidak cocok dengan NIK.'])->withInput();
         }
     }
 
-    // NIK tidak ditemukan
+
     return back()->withErrors(['nik' => 'NIK tidak ditemukan.'])->withInput();
 }
 
@@ -64,13 +63,13 @@ class AuthController extends Controller
             'nik' => 'required|string|max:16|unique:users,nik',
         ]);
 
-        // Create user
+     
         $user = User::create([
             'name' => $request->name,
             'nik' => $request->nik,
         ]);
 
-        // Automatically log in the user after registration
+        
         Auth::login($user);
 
         return redirect()->route('login')->with('success', 'Registrasi berhasil.');
